@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void interactive_shell(void)
+void uninteractive_shell(void)
 {
 	char *shline, **shargs;
 	int state;

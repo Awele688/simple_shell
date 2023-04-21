@@ -34,7 +34,7 @@ char *readshline(void)
 		perror("myshell: Allocation problems\n");
 		exit(EXIT_FAILURE);
 	}
-	while ((v = getchar()) != EOF && v == '\n')
+	while ((v = getchar()) != EOF && v != '\n')
 	{
 		buffer[pos] = v;
 		pos++;
@@ -109,7 +109,7 @@ int execute(char **shargs)
 	{
 		return (-1);
 	}
-	for (i = 0; i < sizeof(builtin_list) / sizeof(char *); i++)
+	for (i = 0; i < sizeof(builtin_list) / sizeof(*builtin_list); i++)
 	{
 		if (strcmp(shargs[0], builtin_list[i]) == 0)
 		{

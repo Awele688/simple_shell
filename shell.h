@@ -11,13 +11,16 @@
 #define SHELL_BUFFERSIZE 1024
 #define BUFFERSIZE 64
 #define DELIMITERS " \n\t\r\""
+#define TRUE 1
 
 extern char **environ;
 
+int _putchar(char c);
+char *callshelline(void);
 void interactive_shell(void);
 void uninteractive_shell(void);
-char *readshline(void);
-char **splitit(char *shline);
+char *readshelline(void);
+char **splitshell(char *shline);
 int shell_builtin(void);
 int execute(char **shargs);
 int newshell_process(char **shargs);

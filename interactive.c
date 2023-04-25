@@ -12,18 +12,18 @@ void interactive_shell(void)
 
 	do {
 		write(STDOUT_FILENO, "myshell($) ", 11);
-		shline = readshline();
-		shargs = splitit(shline);
+		shline = readshelline();
+		shargs = splitshell(shline);
 		state = execute(shargs);
 	free(shline);
 	free(shargs);
 	} while (state);
 }
 /**
- * readshline - A function that reads the line from the shell input
+ * readshelline - A function that reads the line from the shell input
  * Return: void
  */
-char *readshline(void)
+char *readshelline(void)
 {
 	int buffsize = SHELL_BUFFERSIZE, pos = 0, v;
 	char *buffer;
@@ -34,30 +34,44 @@ char *readshline(void)
 		perror("myshell: Allocation problems\n");
 		exit(EXIT_FAILURE);
 	}
-	while ((v = getchar()) != EOF && v != '\n')
+	while (TRUE)
 	{
-		buffer[pos] = v;
-		pos++;
-	if (pos >= buffsize)
-	{
-		buffsize += SHELL_BUFFERSIZE;
-		buffer = realloc(buffer, buffsize);
-		if (buffer == NULL)
+		v = getchar();
+		if (v == EOF)
 		{
-			perror("myshell: Allocation problems\n");
-			exit(EXIT_FAILURE);
+			free(buffer);
+			_putchar('\n');
+			exit(EXIT_SUCCESS);
+		}
+		else if (v == '\n')
+		{
+			buffer[pos] = '\0';
+			return (buffer);
+		}
+		else
+		{
+			buffer[pos] = v;
+		}
+		pos++;
+		if (pos >= buffsize)
+		{
+			buffsize += SHELL_BUFFERSIZE;
+			buffer = realloc(buffer, buffsize);
+			if (buffer == NULL)
+			{
+				perror("myshell: Allocation problems\n");
+				exit(EXIT_FAILURE);
+			}
 		}
 	}
-	}
-	buffer[pos] = '\0';
-	return (buffer);
+	return (0);
 }
 /**
- * splitit - The function takes the string passed and splits into tokens
+ * splitshell - The function takes the string passed and splits into tokens
  * @shline: A pointer to character string passed to the shell
  * Return: character if successful
  */
-char **splitit(char *shline)
+char **splitshell(char *shline)
 {
 	int x = 0, buff = BUFFERSIZE;
 	char **toks, *token, *ptr;
@@ -99,7 +113,7 @@ char **splitit(char *shline)
  */
 int execute(char **shargs)
 {
-	long unsigned int i;
+	unsigned long int i;
 
 	char *builtin_list[] = {"cd", "env", "exit"};
 
@@ -117,4 +131,16 @@ int execute(char **shargs)
 		}
 	}
 	return (newshell_process(shargs));
+}
+
+/**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is ser appropriately.
+ */
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
 }

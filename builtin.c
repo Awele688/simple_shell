@@ -6,13 +6,17 @@
  */
 int sh_exit(char **shargs)
 {
+	int status;
+
 	if (shargs[1])
 	{
-		return (atoi(shargs[1]));
+		status = atoi(shargs[1]);
+		exit(status);
 	}
+
 	else
 	{
-		return (0);
+		exit(0);
 	}
 }
 /**

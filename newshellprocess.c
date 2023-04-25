@@ -9,7 +9,7 @@ int newshell_process(char **shargs)
 {
 	pid_t pid;
 	int status;
-	
+
 	pid = fork();
 	if (pid == 0)
 	{

@@ -28,4 +28,6 @@ int newshell_process(char **shargs);
 int sh_exit(char **shargs);
 int sh_env(__attribute__((unused))char **shargs);
 int sh_cd(char **shargs);
+int shell_setenv(char **shargs);
+int shell_unsetenv(char **shargs);
 #endif

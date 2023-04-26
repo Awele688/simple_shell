@@ -115,9 +115,10 @@ int execute(char **shargs)
 {
 	unsigned long int i;
 
-	char *builtin_list[] = {"cd", "env", "exit"};
+	char *builtin_list[] = {"cd", "env", "exit", "setenv", "unsetenv"};
 
-	int (*builtin_func[])(char **) = {&sh_cd, &sh_env, &sh_exit};
+	int (*builtin_func[])(char **) = {&sh_cd, &sh_env, &sh_exit,
+		&shell_setenv, &shell_unsetenv};
 
 	if (shargs == NULL)
 	{

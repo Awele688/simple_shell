@@ -79,3 +79,43 @@ int sh_env(__attribute__((unused))char **shargs)
 	}
 	return (-1);
 }
+/**
+ * shell_setenv - Initialize a new environment variable
+ * @shargs: Arguments
+ * Return: 0
+ */
+int shell_setenv(char **shargs)
+{
+	if (shargs[1] == NULL || shargs[2] == NULL)
+	{
+		write(STDERR_FILENO, "Usage: setenv VARIABLE VAL\n",
+		strlen("Usage: setenv VARIABLE VAL\n"));
+		return (-1);
+	}
+	if (setenv(shargs[1], shargs[2], 1) != 0)
+	{
+		perror("Error in shell_setenv: sets env. variables\n");
+		return (-1);
+	}
+	return (0);
+}
+/**
+ * shell_unsetenv - Remove an environment variable
+ * @shargs: Arguments
+ * Return: 0
+ */
+int shell_unsetenv(char **shargs)
+{
+	if (shargs[1] == NULL)
+	{
+		write(STDERR_FILENO, "Usage: unsetenv VARIABLE VAL\n",
+		strlen("Usage: unsetenv VARIABLE VAL\n"));
+		return (-1);
+	}
+	if (unsetenv(shargs[1]) != 0)
+	{
+		perror("Error in shell_unsetenv: unsets env. variables\n");
+		return (-1);
+	}
+	return (0);
+}

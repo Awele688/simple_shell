@@ -26,7 +26,7 @@ void interactive_shell(void)
 char *readshelline(void)
 {
 	int buffsize = SHELL_BUFFERSIZE, pos = 0, v;
-	char *buffer, *newbuffer;
+	char *buffer;
 
 	buffer = malloc(sizeof(char) * buffsize);
 	if (buffer == NULL)
@@ -48,20 +48,20 @@ char *readshelline(void)
 			buffer[pos] = '\0';
 			return (buffer);
 		}
-		buffer[pos] = v;
+		else
+		{
+			buffer[pos] = v;
+		}
 		pos++;
 		if (pos >= buffsize)
 		{
 			buffsize += SHELL_BUFFERSIZE;
-			newbuffer = malloc(sizeof(char) * buffsize);
-			if (newbuffer == NULL)
+			buffer = realloc(buffer, buffsize);
+			if (buffer == NULL)
 			{
 				perror("myshell: Allocation problems\n");
 				exit(EXIT_FAILURE);
 			}
-			mymemcpy(newbuffer, buffer, pos);
-			free(buffer);
-			buffer = newbuffer;
 		}
 	}
 	return (0);
@@ -73,8 +73,8 @@ char *readshelline(void)
  */
 char **splitshell(char *shline)
 {
-	int x = 0, buff = BUFFERSIZE, y;
-	char **toks, *token, *ptr, **newtoken;
+	int x = 0, buff = BUFFERSIZE;
+	char **toks, *token, *ptr;
 
 	toks = malloc(buff * sizeof(char *));
 	if (toks == NULL)
@@ -89,28 +89,21 @@ char **splitshell(char *shline)
 		{
 			break;
 		}
-	toks[x] = mystrdup(token);
+	toks[x] = token;
 	x++;
 	if (x >= buff)
 	{
 		buff += buff;
-		newtoken = malloc(buff * sizeof(char *));
-		if (newtoken == NULL)
+		toks = realloc(toks, buff * sizeof(char *));
+		if (toks == NULL)
 		{
 			perror("Allocation problems when splitting the line\n");
 			exit(EXIT_FAILURE);
 		}
-		mymemcpy(newtoken, toks, x * sizeof(char *));
-		free(toks);
-		toks = newtoken;
 	}
 		token = strtok_r(NULL, DELIMITERS, &ptr);
 	}
 	toks[x] = NULL;
-	for (y = 0; y < x; y++)
-	{
-		free(toks[y]);
-	}
 	return (toks);
 }
 /**
@@ -132,7 +125,7 @@ int execute(char **shargs)
 	}
 	for (i = 0; i < sizeof(builtin_list) / sizeof(*builtin_list); i++)
 	{
-		if (mystrcmp(shargs[0], builtin_list[i]) == 0)
+		if (strcmp(shargs[0], builtin_list[i]) == 0)
 		{
 			return ((*builtin_func[i])(shargs));
 		}

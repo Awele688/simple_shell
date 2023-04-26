@@ -13,7 +13,6 @@ int sh_exit(char **shargs)
 		status = atoi(shargs[1]);
 		exit(status);
 	}
-
 	else
 	{
 		exit(0);

@@ -24,7 +24,7 @@ void uninteractive_shell(void)
 char *callshelline(void)
 {
 	int buffsize = SHELL_BUFFERSIZE, pos = 0, v;
-	char *buffer, *newbuffer;
+	char *buffer;
 
 	buffer = malloc(sizeof(char) * buffsize);
 	if (buffer == NULL)
@@ -45,20 +45,20 @@ char *callshelline(void)
 			buffer[pos] = '\0';
 			return (buffer);
 		}
+		else
+		{
 		buffer[pos] = v;
+		}
 		pos++;
 		if (pos >= buffsize)
 		{
 			buffsize += SHELL_BUFFERSIZE;
-			newbuffer = malloc(sizeof(char) * buffsize);
-			if (newbuffer == NULL)
+			buffer = realloc(buffer, buffsize);
+			if (buffer == NULL)
 			{
 				perror("myshell: Allocation problems\n");
 				exit(EXIT_FAILURE);
 			}
-			mymemcpy(newbuffer, buffer, pos);
-			free(buffer);
-			buffer = newbuffer;
 		}
 	}
 	return (0);

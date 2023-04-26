@@ -27,8 +27,4 @@ int newshell_process(char **shargs);
 int sh_exit(char **shargs);
 int sh_env(__attribute__((unused))char **shargs);
 int sh_cd(char **shargs);
-int mystrcmp(const char *str1, const char *str2);
-size_t mystrlen(const char *b);
-void *mymemcpy(void *dest, const void *src, size_t x);
-char *mystrdup(const char *i);
 #endif

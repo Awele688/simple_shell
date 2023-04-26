@@ -28,8 +28,8 @@ int sh_cd(char **shargs)
 {
 	if (shargs[1] == NULL)
 	{
-		write(STDERR_FILENO, "Expected argument to \"cd\"n",
-				strlen("Expected argument to \"cd\"n"));
+		write(STDERR_FILENO, "Expected argument to \"cd \"\n",
+				strlen("Expected argument to \"cd \"\n"));
 	}
 	else
 	{

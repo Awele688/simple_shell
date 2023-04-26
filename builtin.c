@@ -7,6 +7,7 @@
 int sh_exit(char **shargs)
 {
 	int status = 0;
+
 	if (shargs[1] != NULL)
 	{
 		status = (atoi(shargs[1]));
@@ -20,19 +21,46 @@ int sh_exit(char **shargs)
  */
 int sh_cd(char **shargs)
 {
-	if (shargs[1] == NULL)
+	char *direct = shargs[1];
+	char cwd[PATH_MAX];
+
+	if (direct == NULL)
 	{
-		write(STDERR_FILENO, "Expected argument to \"cd \"\n",
-				strlen("Expected argument to \"cd \"\n"));
-	}
-	else
-	{
-		if (chdir(shargs[1]) != 0)
+		direct = getenv("$HOME");
+		if (direct == NULL)
 		{
-			perror("Error in sh_cd: changing dir\n");
+			perror("Error in sh_cd: getting HOME directory\n");
+			return (-1);
 		}
 	}
-	return (-1);
+	else if (strcmp(direct, "-") == 0)
+	{
+		direct = getenv("OPWD");
+		if (direct == NULL)
+		{
+			perror("Error in sh_cd: changing dir to OPWD\n");
+			return (-1);
+		}
+		write(STDOUT_FILENO, direct, strlen(direct));
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		perror("Error in sh_cd: gets cwd\n");
+		return (-1);
+	}
+	if (chdir(direct) == -1)
+	{
+		perror("Error in sh_cd: changing directory\n");
+		return (-1);
+	}
+	if (setenv("PWD", getcwd(cwd, sizeof(cwd)), 1) != 0 ||
+		setenv("OPWD", cwd, 1) != 0)
+	{
+		perror("Error in sh_cd: sets env. variables\n");
+		return (-1);
+	}
+	return (0);
 }
 /**
  * sh_env - A function that outputs environment variables

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <limits.h>
 
 #define SHELL_BUFFERSIZE 1024
 #define BUFFERSIZE 64

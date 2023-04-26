@@ -8,7 +8,7 @@
 void interactive_shell(void)
 {
 	char *shline, **shargs;
-	int state;
+	int state, empty = 1, i;
 
 	do {
 		write(STDOUT_FILENO, "myshell($) ", 11);

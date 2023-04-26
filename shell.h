@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <ctype.h>
 
 #define SHELL_BUFFERSIZE 1024
 #define BUFFERSIZE 64

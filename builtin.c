@@ -7,12 +7,11 @@
 int sh_exit(char **shargs)
 {
 	int status = 0;
-
 	if (shargs[1] != NULL)
 	{
-		status = atoi(shargs[1]);
+		status = (atoi(shargs[1]));
 	}
-	exit(status);
+	_exit(status);
 }
 /**
  * sh_cd - A function that changes the directory of the shell

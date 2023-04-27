@@ -11,7 +11,7 @@
 
 #define SHELL_BUFFERSIZE 1024
 #define BUFFERSIZE 64
-#define DELIMITERS " \n\t\r\""
+#define DELIMITERS " \n\t\r\",;,&,|"
 #define TRUE 1
 
 extern char **environ;
